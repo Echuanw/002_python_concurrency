@@ -1,6 +1,8 @@
-  > https://docs.python.org/3/library/multiprocessing.html
+
 
 所有进程的调度都依靠操作系统的支持。你使用哪种操作系统，Python 会提供对应操作系统的 Python 虚拟机，来大同与操作系统底层相关的服务通道来实现。
+
+  > https://docs.python.org/3/library/multiprocessing.html
 
 ## 1 Create Process
 
@@ -229,6 +231,62 @@ if __name__ == '__main__':
 在一个 Python 应用过程之中，每一个进程启动都意味着要配置其处理的业务逻辑(业务子进程)，但是某些进程在执行的时候可能需要其他进程的帮助。例如:富豪的生活里面是需要有仆人的，仆人为其穿衣服，，为其喂饭，为其拿手机。
 在操作系统里面，也可以针对于某一个进程来设置一些辅助的进程，而这样的进程就称为守护进程。
 
-![600](assets/note_image/image-20240905155343623.png)
+
 
 假设现在要做一个数据聊天的功能，但是需要将每一次的聊天记录进行存档，因此可以编写一个守护进程，把每次发送的数据异步上传到服务器上，从而实现员工的监控。
+
+```python
+from multiprocessing import Process, current_process 
+import time
+
+""" 
+    The fifth use script of Process : s002_simple_multiprocessing03.py
+    1 Daemon , create daemon and start by called process. when called process end, daemon process alse will disapper 
+"""
+
+
+def process_core():           # core business
+    # create daemon and start by called process. when called process end, daemon process alse will disapper 
+    daemon_p = Process(target=process_check, name='daemon_process', daemon=True) # Daemon set True
+    daemon_p.start()
+    # process of core business
+    for item in range(2):
+        print('【Sub Process】Process ID : %s , Process Name : %s , Current Stage: %d / 2' %
+            (current_process().pid, current_process().name, item+1))
+        time.sleep(2)
+    print('【Sub Process】Process ID : %s , Process Name : %s , End' %   
+                (current_process().pid, current_process().name))
+
+def process_check():           # check process 
+    count = 1
+    while True:                # keep check
+        print('【Daemon %s】The %d-th check' % (current_process().name ,count))
+        count += 1
+        time.sleep(1)
+    
+def main():
+    p = Process(target=process_core, name='Core Business Process')
+    p.start()
+    time.sleep(10)
+    print('【Main Process】Process ID : %s , Process Name : %s End' %
+        (current_process().pid, current_process().name))
+if __name__ == '__main__':
+    main()
+```
+
+## 线程池
+
+   > https://docs.python.org/3/library/concurrent.futures.html
+   
+`concurrent.futures` module provides a high-level interface for asynchronously executing callables.
+
+所谓的“XX 池”，都属于对资源的统一管理。
+如果一个操作系统之中无限制的增加进程，就一定会影响到其他进程的执行速度。
+因此为了可以保证进程处于一个服务端硬件环境合理的范围之中，就需要有效的控制进程数量，通过进程池来实现。
+进程池中的进程梳理，一般都建议与CPU的内核数量相同。
+
+
+
+```python
+
+```

@@ -2,7 +2,7 @@ from multiprocessing import Process, current_process
 import time
 
 """ 
-    The fifth use script of Process : s002_simple_multiprocessing03.py
+    The fifth use script of Process : s002_simple_multiprocessing04.py
     1 Daemon , create daemon and start by called process. when called process end, daemon process alse will disapper 
 """
 

@@ -3,7 +3,21 @@
 
 Python 在并发编程上所做出的设计是非常完善的，基本上包含有当前的各种主流模式，包括多进程、多线程和多协程的三种方式，并发编程的意义在于，提高程序的运行效率，充分的压硬件资源。
 
-## 2 基本概念 
+## 2 线程相关概念 
+
+线程
+
+Lock
+
+When multiple threads share the same resource (variable), it can lead to unpredictable[](不可控) results, potentially[](可能) causing the program to fail or crash. 
+We can use locks to protect the same resource. **Only the thread that acquires the lock[](获得锁) can access this resource**, while other threads that do not have the lock will be blocked until the thread that holds the lock releases it. 
+
+RLock
+
+The basic behavior of `RLock` in Python is similar to that of `Lock`, with the difference being that a `Lock` can only be acquired once by the same thread, while an `RLock` can be acquired multiple times by the same thread.
+
+
+## 2 进程相关概念 
 
 ### 2.1 进程
 
