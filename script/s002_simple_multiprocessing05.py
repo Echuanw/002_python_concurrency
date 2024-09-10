@@ -23,18 +23,16 @@ def process_task_error(err):
 
 
 def main():
-    p_pool = Pool(
-        processes=cpu_count()     # cpu 核心数
-    )
-    for item in range(5):
-        rst = p_pool.apply_async(        # 异步方式执行
-            func=process_task,
-            args=(item,),
-            callback=process_task_callback,  # 处理完成后进行回调处理
-            error_callback=process_task_error
-        ) 
-        print(rst.get())     # 进行执行完成，触发callback() 并返回
-    p_pool.close()   # 关闭进程池
+    with Pool(processes=cpu_count()) as p_pool:   # cpu 核心数(default)
+        for item in range(5):
+            rst = p_pool.apply_async(            # 异步方式执行
+                func=process_task,
+                args=(item,),
+                callback=process_task_callback,  # 处理完成后进行回调处理
+                error_callback=process_task_error
+            ) 
+            print(rst.get())                     # 进行执行完成，触发callback() 并返回
+            # p_pool.close()   # with 会自动关闭进程池
 
 if __name__ == '__main__':
     main()

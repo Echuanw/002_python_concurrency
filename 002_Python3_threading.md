@@ -220,7 +220,7 @@ We can use locks to protect the same resource. **Only the thread that acquires t
 | 5   | with _lock: | use way      | locks also support the context management protocol.the `with` statement automatically acquires and releases the lock. |
 
 `threading.RLock` Class Description.
-a `Lock` can only be acquired once by the same thread, while an `RLock` can be acquired multiple times by the same thread.
+The basic behavior of `RLock` in Python is similar to that of `Lock`, with the difference being that a `Lock` can only be acquired once by the same thread, while an `RLock` can be acquired multiple times by the same thread.
 
 | No. | Structure    | type         | Desciption                                                                                                                       |
 | --- | ------------ | ------------ | -------------------------------------------------------------------------------------------------------------------------------- |
@@ -611,6 +611,24 @@ players = [Player(barrier) for _ in range(3)]
 
 for player in players:
     player.start()
+```
+
+## 10 Queue
+
+`queue.Queue`  Thread-safe, meaning that when multiple threads operate simultaneously, it will not lead to exceptions (as it internally implements locks).
+
+- **put(item)**：将`item`放入队列。
+- **get()**：从队列中移除并返回一个项目。如果队列为空，`get()`会阻塞，直到有项目可用。
+- **empty()**：如果队列为空，返回`True`，否则返回`False`。
+- **full()**：如果队列已满，返回`True`，否则返回`False`。
+- **task_done()**：表示先前的`get()`调用已经处理完一个项目。
+- **join()**：阻塞，直到队列中所有的项目都已经被处理。
+
+```python
+import time
+import threading 
+
+def get_detail_
 ```
 
 ## Else
